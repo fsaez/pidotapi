@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./backend
+    #command: gunicorn api.main:app -w 1 -k uvicorn.workers.UvicornWorker  -b :8001 --reload
+    command: python api/main.py
+    volumes:
+      - ./backend/api:/home/app/backend/api
+    ports:
+      - "8001:8001"
+  nginx:
+    build: ./nginx
+    depends_on:
+      - web
+    ports:
+      - "8002:8002"

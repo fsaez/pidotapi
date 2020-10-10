@@ -1,0 +1,20 @@
+FROM python:3.8-slim-buster
+
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y install --no-install-recommends swig gcc g++ git libpq-dev netcat && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /home/app
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/backend
+WORKDIR $APP_HOME
+
+RUN pip install --upgrade pip 
+ADD ./requirements.txt $APP_HOME
+RUN pip install -r requirements.txt
+
+COPY ./entrypoint.sh $APP_HOME
+
+ENTRYPOINT ["/home/app/backend/entrypoint.sh"]
