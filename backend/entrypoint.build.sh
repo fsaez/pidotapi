@@ -1,2 +1,2 @@
 #!/bin/sh
-exec "python api/main.py"
+exec "python /home/app/backend/api/main.py"

@@ -15,7 +15,7 @@ RUN pip install --upgrade pip
 ADD ./requirements.txt $APP_HOME
 RUN pip install -r requirements.txt
 
-COPY ./api/ $APP_HOME/
+COPY ./api $APP_HOME/api
 COPY ./entrypoint.build.sh $APP_HOME/entrypoint.sh
 
-ENTRYPOINT ["/home/app/backend/entrypoint.sh"]
+CMD ["python", "/home/app/backend/api/main.py"]
