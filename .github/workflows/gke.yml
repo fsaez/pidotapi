@@ -45,7 +45,7 @@ jobs:
         docker build \
           --tag "$REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:$GITHUB_SHA" \
           -f "backend/Dockerfile.build" \
-          .
+          backend/
 
     # Push the Docker image to Google Container Registry
     - name: Publish
