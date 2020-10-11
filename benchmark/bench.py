@@ -56,5 +56,7 @@ if __name__ == "__main__":
 
     if not options.t:
         t = int(int(options.r)/int(options.c))
+    else:
+        t = int(options.t)
 
     locust_run(int(options.c), int(options.r), t, base, path, options.w)
