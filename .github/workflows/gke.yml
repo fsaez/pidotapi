@@ -49,7 +49,7 @@ jobs:
 
     - name: Test
       run: |
-        docker run -it --rm gcr.io/fasdsadsa/pidtoapi:latest pytest
+        docker run --rm gcr.io/fasdsadsa/pidtoapi:latest pytest
 
     # Push the Docker image to Google Container Registry
     - name: Publish
