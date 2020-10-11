@@ -37,6 +37,7 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
+        gcloud config set project ${{ secrets.GKE_PROJECT }}
 
     - name: Build and Publish
       run: |
