@@ -1,5 +1,9 @@
 steps:
-    - name: 'gcr.io/cloud-builders/docker'
-      args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/pidotapi', 'Dockerfile.build' ]
-    images:
-    - 'gcr.io/$PROJECT_ID/pidotapi'
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+    - build
+    - "--tag=gcr.io/$PROJECT_ID/pidotapi"
+    - "--file=./Dockerfile.build"
+    - .
+images:
+  - 'gcr.io/$PROJECT_ID/pidotapi'

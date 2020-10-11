@@ -14,8 +14,8 @@ spec:
         name: web
     spec:
       containers:
-      - image: gcr.io/google-samples/hello-app:2.0
+      - image: gcr.io/falabella-291504/pidotapi
         name: web
         ports:
-        - containerPort: 8080
+        - containerPort: 8001
           protocol: TCP
