@@ -10,9 +10,9 @@ env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
   GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
   GITHUB_SHA: ${{ github.sha }}
-  GKE_ZONE: us-central-1a
-  GKE_CLUSTER: falabella-cluster-1
-  IMAGE: pidotapi
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+  IMAGE: ${{ secrets.IMAGE }}
   REGISTRY_HOSTNAME: gcr.io
   DEPLOYMENT_NAME: pidotapi
 
@@ -46,6 +46,10 @@ jobs:
           --tag "$REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:$GITHUB_SHA" \
           -f "backend/Dockerfile.build" \
           backend/
+
+    - name: Test
+      run: |
+        docker run -it --rm gcr.io/fasdsadsa/pidtoapi:latest pytest
 
     # Push the Docker image to Google Container Registry
     - name: Publish
