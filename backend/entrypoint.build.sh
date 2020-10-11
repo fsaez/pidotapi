@@ -1,2 +1,2 @@
 #!/bin/sh
-exec "$@"
+exec "python api/main.py"
