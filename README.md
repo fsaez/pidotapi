@@ -29,7 +29,13 @@ archivo json
 GKE_PROJECT
 falabella-291504
 
+GKE_ZONE
+us-central1-a
 
+IMAGE
+pidtoapi
+
+GKE_CLUSTER
 
 
 # Compilar imagen
