@@ -5,6 +5,20 @@
     <em>PI.API, tu API para calcular decimales con algunos datos random. </em>
 </p>
 
+## Uso de la API
+Para utilizar la API simplemente se debe escoger la cantidad de decimales que quieras calcular, los cuales serán calculados de forma aleatoria entre (parametro/2 y parametro)
+
+Uso: 
+
+```console
+GET https://pi.fesatel.cl/pi/?random_limit=DECIMAL 
+```
+
+Ejemplo:
+```console
+GET https://pi.fesatel.cl/pi/?random_limit=10 
+```
+
 ## Requerimientos
 Python 3.8+
 
