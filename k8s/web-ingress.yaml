@@ -1,12 +1,13 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: web-ingress
+  name: web-ingress-cert
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: DIRECCION-IP
+    networking.gke.io/managed-certificates: certificado-pi
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /*
-        backend:
-          serviceName: web-svc
-          servicePort: 9090
+  backend:
+    serviceName: web-nodeport
+    servicePort: 80
+
+# https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs#console
