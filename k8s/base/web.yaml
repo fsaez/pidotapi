@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: web
+  template:
+    metadata:
+      labels:
+        run: web
+        name: web
+    spec:
+      containers:
+      - image: gcr.io/falabella-291504/pidotapi
+        name: web
+        ports:
+        - containerPort: 8001
+          protocol: TCP
