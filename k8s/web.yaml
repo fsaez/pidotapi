@@ -8,5 +8,5 @@ spec:
       $setElementOrder/containers:
       - name: web
       containers:
-      - image: TO_BE_MODIFIED
+      - image: gcr.io/PROJECT_ID/IMAGE:TAG
         name: web

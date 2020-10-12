@@ -14,7 +14,7 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   IMAGE: ${{ secrets.IMAGE }}
   REGISTRY_HOSTNAME: gcr.io
-  DEPLOYMENT_NAME: pidotapi
+  DEPLOYMENT_NAME: ${{ secrets.IMAGE }}
 
 jobs:
   setup-build-publish-deploy:
