@@ -134,3 +134,13 @@ Ejemplo para ejecutar 100 conexiones y con interfaz gráfica
 ```console
 python benchmark/bench.py -u http://127.0.0.1:8002/pi/?random_limit=100 -w 1 -r 100
 ```
+
+## TODO
+* Agregar mayor cobertura y mas funciones para testing.
+* Utilizar Terraform o GC Deployment Manager para automatizar creación de Cluster K8s
+* Documentar las funciones y mayor explicación en general.
+* Pasar ciertas variables raw en el código a variables que puedan ser tomadas desde el environment
+
+## Disclaimer
+* Esta aplicación fue realizada para proceso de postulación de trabajo.
+* El valor de SECRET_KEY y fakedata.py solo se encuentran como demostración.
