@@ -19,6 +19,11 @@ Ejemplo:
 GET https://pi.fesatel.cl/pi/?random_limit=10 
 ```
 
+Respuesta: (En este caso el numero random fue de 9)
+```console
+{"PiCalc":"3.141592654"}
+```
+
 ## Requerimientos
 Python 3.8+
 
