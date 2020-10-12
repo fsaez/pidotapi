@@ -31,7 +31,7 @@ Para ejecutarlo viene con la automatización de Github Actions con GKE el cual s
 
 ### 1. Crear cuenta en GKE:
 
-- Crear una cuenta de Servicio en Google Cloud (https://console.cloud.google.com/iam-admin/serviceaccounts)
+- Crear una cuenta de <a href="https://console.cloud.google.com/iam-admin/serviceaccounts">Servicio en Google Cloud</a>
 - Asignar los siguientes roles de Cloud IAM:
 -- Kurnetes Engine Developer
 -- Storage Admin
@@ -63,6 +63,10 @@ Se deben definir los Secrets dentro de Github el cual deben ser los siguientes:
 * GKE_CLUSTER: Nombre del cluster de GKE creado.
 * IMAGE: Nombre del programa, en este caso 'pidtoapi'.
 
+Esta versión en producción para GKE contiene un servicio LoadBalancing (web-lb.yaml) y además un HorizontalPodAutoscaler (web-autoscaler) definido previamente entre 1 a 10 imágenes que escalarán si existe una carga sobre el 35%.
+
+Para el deployment con Github Actions de forma variable se utiliza <a href="https://kustomize.io/">Kustomize </a> 
+
 ## Puesta en producción - Manual
 
 Si se realizará en un cluster local de Kubernetes, se deben realizar los siguientes pasos de forma manual:
@@ -92,12 +96,10 @@ docker build \
 ```
 ### 5. Deployment de imagen en K8s
 
-kubectl create -f k8s/base/web.yaml --save-config
- kubectl get deployment web
-kubectl create -f k8s/web-lb.yaml
- kubectl get service web-lb
-kubectl create -f k8s/web-autoscaler.yaml
- kubectl get hpa
+```console
+kubectl create -f k8s/base/web.yaml --save-config # Levantar web.yaml con imagen en pidotapi:latest
+kubectl get deployment web # Ver estado del deployment
+```
 
 ## Benchmark
 Para realizar pruebas se programó en python una solución que utiliza locust, el cual contiene las siguientes opciones:
