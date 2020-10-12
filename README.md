@@ -1,58 +1,115 @@
-## Kubernetes
-# Crear cluster K8s en GKE
-export my_zone=us-central1-a
-export my_cluster=falabella-cluster-1
-source <(kubectl completion bash)
-gcloud container clusters create $my_cluster \
-   --num-nodes 3 --enable-ip-alias --zone $my_zone
-gcloud container clusters get-credentials $my_cluster --zone $my_zone
+<p align="center">
+  <img src="logo.png" alt="PI.API">
+</p>
+<p align="center">
+    <em>PI.API, tu API para calcular decimales con algunos datos random. </em>
+</p>
 
+## Requerimientos
+Python 3.8+
 
-# Github Actions
-Github
-- Repo
-- Secrets
+La aplicación utiliza los siguientes requerimientos (se encuentran en el requirements.txt)
+* fastapi
+* uvicorn
+* gunicorn
+* pytest
+* python-jose[cryptography]
+* passlib[bcrypt]
+* python-multipart
+* requests
 
-GKE
-- Google Cloud service account  (https://console.cloud.google.com/iam-admin/serviceaccounts)
-- Cloud IAM roles:
+## Desarrollo local
+Para el desarrollo en forma local, se encuentra el archivo docker-compose.yml, por lo que para ejecutar, una vez clonado el repositorio solo se necesita: 
+
+```console
+$ docker-compose -f "docker-compose.yml" up -d --build
+```
+En esta versión se utiliza NGINX como frontend y el puerto 8002.
+
+## Puesta en producción GKE - Github Actions
+Para ejecutarlo viene con la automatización de Github Actions con GKE el cual se encuentra en el archivo .github/workflows/gke.yml, para que se pueda utilizar, se deben realizar los siguientes pasos
+
+### 1. Crear cuenta en GKE:
+
+- Crear una cuenta de Servicio en Google Cloud (https://console.cloud.google.com/iam-admin/serviceaccounts)
+- Asignar los siguientes roles de Cloud IAM:
 -- Kurnetes Engine Developer
 -- Storage Admin
-- Create a JSON service account key 
+- Crear un secreto JSON de la cuenta de servicio. 
 
-GKE_EMAIL 
-github-actions@falabella-291504.iam.gserviceaccount.com
+### 2. Creación cluster GKE
+TODO: Automatización via Terraform.
 
-GKE_KEY
-archivo json
+Primero se definirán las variables de nombre de la Zona donde se ejecutará el cluster GKE y el nombre del cluster
+```console
+export my_zone=zona-gke
+export my_cluster=nombre-cluster
+```
 
-GKE_PROJECT
-falabella-291504
+Posteriormente, se creará el cluster de GKE
 
-GKE_ZONE
-us-central1-a
+```console
+gcloud container clusters create $my_cluster --num-nodes 3 --enable-ip-alias --zone $my_zone
+gcloud container clusters get-credentials $my_cluster --zone $my_zone
+```
+### 3. Definir parámetros de Github Actions:
 
-IMAGE
-pidtoapi
+Se deben definir los Secrets dentro de Github el cual deben ser los siguientes:
 
-GKE_CLUSTER
+* GKE_EMAIL: Cuenta de servicio de GKE generada anteriormente (Debe ser formato correo)
+* GKE_KEY: Archivo JSON generado de la cuenta de servicio de GKE
+* GKE_PROJECT: ID Proyecto de Google Cloud
+* GKE_ZONE: Zona del cluster de GKE creado. 
+* GKE_CLUSTER: Nombre del cluster de GKE creado.
+* IMAGE: Nombre del programa, en este caso 'pidtoapi'.
 
+## Puesta en producción - Manual
 
-# Compilar imagen
-git pull ..
+Si se realizará en un cluster local de Kubernetes, se deben realizar los siguientes pasos de forma manual:
+
+### 1. Clonar código y entrar a carpeta backend
+
+```console
+git pull .
 cd backend
-gcloud builds submit --config cloud-build.yml
+```
+### 2. Construir imagen docker
 
-# Deployment de imagen en K8s
-web.yaml
-kubectl create -f web.yaml --save-config
- kubectl get deployment
-kubectl create -f web-lb.yaml
+```console
+docker build \
+   --tag "pidotapi:latest" \
+   -f "backend/Dockerfile.build" \
+   backend/
+```
+
+### 3. Ejecutar pruebas 
+```console
+   docker run --rm pidotapi:latest pytest
+```
+### 4. Subir imagen
+```console
+   docker push pidotapi:latest
+```
+### 5. Deployment de imagen en K8s
+
+kubectl create -f k8s/base/web.yaml --save-config
+ kubectl get deployment web
+kubectl create -f k8s/web-lb.yaml
  kubectl get service web-lb
-kubectl create -f web-ingress.yaml
- kubectl get ingress
-kubectl create -f web-autoscaler.yaml
+kubectl create -f k8s/web-autoscaler.yaml
  kubectl get hpa
 
 ## Benchmark
-python benchmark/bench.py -u http://34.70.71.49/pi/?random_limit=100 -w 1 -r 100
+Para realizar pruebas se programó en python una solución que utiliza locust, el cual contiene las siguientes opciones:
+```console
+-c: Conexiones concurrentes. Por defecto: 10
+-r: Cantidad de peticiones. Por defecto: 100
+-t: Tiempo total de testing. Por defecto: Cantidad/Conexiones
+-u: URL/Endpoint de la API para testear. Obligatorio.
+-w: Para levantar interfaz gráfica en browser. Por defecto: 0.
+```
+
+Ejemplo para ejecutar 100 conexiones y con interfaz gráfica
+```console
+python benchmark/bench.py -u http://127.0.0.1:8002/pi/?random_limit=100 -w 1 -r 100
+```
