@@ -38,6 +38,10 @@ jobs:
         # via gcloud command-line tool.
         gcloud auth configure-docker
 
+    # Setear proyecto en gcloud
+    - run: |-
+        gcloud config set project $GKE_PROJECT
+
     # Get the GKE credentials so we can deploy to the cluster
     - run: |-
         gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
