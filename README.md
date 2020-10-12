@@ -88,7 +88,7 @@ Si se realizará en un cluster local de Kubernetes, se deben realizar los siguie
 ### 1. Clonar código y entrar a carpeta backend
 
 ```console
-git pull .
+git clone https://github.com/fsaez/pidotapi.git
 cd backend
 ```
 ### 2. Construir imagen docker
