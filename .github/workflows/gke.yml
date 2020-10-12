@@ -14,7 +14,7 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   IMAGE: ${{ secrets.IMAGE }}
   REGISTRY_HOSTNAME: gcr.io
-  DEPLOYMENT_NAME: ${{ secrets.IMAGE }}
+  DEPLOYMENT_NAME: web
 
 jobs:
   setup-build-publish-deploy:
